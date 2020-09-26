@@ -1,7 +1,5 @@
-import { OnInitialize } from "overmind";
+import { OnInitialize } from 'overmind'
 
 export const onInitialize: OnInitialize = async ({ effects, state }) => {
-  /**
-   * Use effects and other actions onInitialize
-   */
-};
+  state.title = `${state.title} + onInitialize`
+}

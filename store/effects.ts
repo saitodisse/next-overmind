@@ -3,5 +3,5 @@ export const apiEffects = (() => {
     /**
      * Async and non-async effects functions
      */
-  };
-})();
+  }
+})()

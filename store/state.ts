@@ -1,7 +1,11 @@
-import { State } from "./types";
+export interface State {
+  page: any
+  title: string
+  menuOpened: boolean
+}
 
 export const state: State = {
-  // NextJS:
-  page: undefined,
-  items: [],
-};
+  page: 'index',
+  title: '',
+  menuOpened: false,
+}

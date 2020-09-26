@@ -1,69 +1,66 @@
-import App from "next/app";
-import Head from "next/head";
-import React from "react";
-import AppLayout from "components/AppLayout";
-import { createOvermind, createOvermindSSR, rehydrate } from "overmind";
-import "../styles/custom.scss";
-import { Provider } from "overmind-react";
-import * as overmindStore from "store";
+/* eslint-disable react/jsx-props-no-spreading */
+import React from 'react'
+import App from 'next/app'
+import Head from 'next/head'
+import { createOvermind, createOvermindSSR, rehydrate } from 'overmind'
+import { Provider } from 'overmind-react'
+import * as overmindStore from '../store'
+import '../styles/index.css'
 
 export default class MyApp extends App {
-  overmind: any;
+  overmind: any
+
   // CLIENT: On initial route
   // SERVER: On initial route
   constructor(props) {
-    super(props);
+    super(props)
 
-    const mutations = props.pageProps.mutations || [];
+    console.log('--  props: ', props)
+    const mutations = props.pageProps.mutations || []
 
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       // On the client we just instantiate the Overmind instance and run
       // the "changePage" action
-      this.overmind = createOvermind(overmindStore.config);
-      this.overmind.actions.changePage(mutations);
+      this.overmind = createOvermind(overmindStore.config)
+      this.overmind.actions.changePage(mutations)
     } else {
       // On the server we rehydrate the mutations to an SSR instance of Overmind,
       // as we do not want to run any additional logic here
-      this.overmind = createOvermindSSR(overmindStore.config);
-      rehydrate(this.overmind.state, mutations);
+      this.overmind = createOvermindSSR(overmindStore.config)
+      rehydrate(this.overmind.state, mutations)
     }
   }
+
   // CLIENT: After initial route, on page change
   // SERVER: never
   componentDidUpdate(): void {
     // This runs whenever the client routes to a new page
-    this.overmind.actions.changePage(this.props.pageProps.mutations || []);
+    this.overmind.actions.changePage(this.props.pageProps.mutations || [])
   }
   // CLIENT: On every page change
   // SERVER: On initial route
 
   render(): JSX.Element {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps } = this.props
 
     return (
       <Provider value={this.overmind}>
         <Head>
-          <title>The website title</title>
+          <title>NextJS + Overmind + Typescript</title>
 
-          <link
-            href="https://unpkg.com/tailwindcss/dist/base.min.css"
-            rel="stylesheet"
-          />
-          <link rel="icon" href="favicon.ico" />
-          <meta name="creator" content="Etienne BLANC" />
-          <meta charSet="utf-8" />
+          <link rel='icon' href='favicon.ico' />
+          <meta name='creator' content='Etienne BLANC' />
+          <meta charSet='utf-8' />
           <meta
-            name="description"
-            content="This is a template for NextJS + Stitches + Overmind + Typescript"
+            name='description'
+            content='This is a template for NextJS + Overmind + Typescript'
           />
-          <meta name="theme-color" content="FFFFFF" />
+          <meta name='theme-color' content='FFFFFF' />
         </Head>
 
-        <AppLayout>
-          <Component {...pageProps} />
-        </AppLayout>
+        <Component {...pageProps} />
       </Provider>
-    );
+    )
   }
 }
 

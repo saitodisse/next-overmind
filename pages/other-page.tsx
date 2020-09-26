@@ -6,7 +6,16 @@ import PropertiesList from '../components/PropertiesList'
 import { createOvermindSSR } from 'overmind'
 import OvermindMutationProps from '../store/PageIndexProps'
 
-const PageIndex: React.FC = () => {
+export const getServerSideProps: GetServerSideProps<OvermindMutationProps> = async () => {
+  const overmind = createOvermindSSR(configOvermind)
+  overmind.state.page = 'other-page'
+
+  return {
+    props: { mutations: overmind.hydrate() },
+  }
+}
+
+const OtherPage: React.FC<OvermindMutationProps> = () => {
   const { state } = useOvermind()
   // -- RENDER --
   return (
@@ -24,24 +33,10 @@ const PageIndex: React.FC = () => {
           <Nav />
 
           <PropertiesList title={state.title} />
-
-          <footer className='flex justify-center my-8 text-gray-700'>
-            {/* date from server: {JSON.stringify(props)} */}
-          </footer>
         </div>
       </div>
     </div>
   )
 }
 
-export default PageIndex
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const overmind = createOvermindSSR(configOvermind)
-  overmind.state.page = 'index'
-  overmind.state.title = `${overmind.state.title} + server`
-
-  return {
-    props: { mutations: overmind.hydrate() },
-  }
-}
+export default OtherPage

@@ -1,20 +1,27 @@
-import { AsyncAction, Action, rehydrate } from "overmind";
+import { AsyncAction, Action, rehydrate } from 'overmind'
 
 export const changePage = ({ state }, mutations) => {
-  rehydrate(state, mutations || []);
+  rehydrate(state, mutations || [])
 
   switch (state.page) {
-    case "Index":
+    case 'index':
       // Do some additional logic
-      break;
-    case "About":
+      break
+    case 'other-page':
       // Do some additional logic
-      break;
+      break
+    case 'change-title-on-server':
+      // Do some additional logic
+      break
     default:
-      break;
+      break
   }
-};
+}
 
-/**
- * Export AsyncAction and Action
- */
+export const titleChanged: Action<string | void> = ({ state }, newTitle) => {
+  state.title = newTitle || ''
+}
+
+export const menuToggled: Action = ({ state }) => {
+  state.menuOpened = !state.menuOpened
+}
